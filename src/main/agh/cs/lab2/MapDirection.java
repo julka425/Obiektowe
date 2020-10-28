@@ -1,33 +1,31 @@
 package agh.cs.lab2;
 
+import java.util.Map;
+
 public enum MapDirection {
     NORTH, SOUTH, WEST, EAST;
 
 
     public String toString() {
         switch (this) {
-            case NORTH:
-                return "Polnoc";
-            case SOUTH:
-                return "Poludnie";
-            case WEST:
-                return "Zachod";
-            case EAST:
-                return "Wschod";
+            case NORTH: return "Polnoc";
+            case SOUTH: return "Poludnie";
+            case WEST: return"Zachod";
+            case EAST: return "Wschod";
         };
-        return null;
+        throw new NullPointerException();
     }
 
 
 
     public MapDirection next() {
-        switch (this) {
+         switch (this) {
             case NORTH: return EAST;
             case EAST: return SOUTH;
             case SOUTH: return WEST;
             case WEST: return NORTH;
         };
-        return null;
+         throw new NullPointerException();
     }
 
 
@@ -39,7 +37,7 @@ public enum MapDirection {
             case SOUTH: return EAST;
             case WEST: return SOUTH;
         };
-        return null;
+        throw new NullPointerException();
     }
 
 
@@ -51,7 +49,7 @@ public enum MapDirection {
             case SOUTH: return new Vector2d(0,-1);
             case WEST: return new Vector2d(-1,0);
         };
-        return null;
+        throw new NullPointerException();
     }
 }
 
