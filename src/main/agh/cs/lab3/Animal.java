@@ -2,35 +2,61 @@ package agh.cs.lab3;
 import agh.cs.lab2.MapDirection;
 import agh.cs.lab2.MoveDirection;
 import agh.cs.lab2.Vector2d;
+import agh.cs.lab4.IWorldMap;
 
+import java.util.List;
 import java.util.Objects;
+import java.lang.IllegalArgumentException;
+import java.util.Optional;
 
 public class Animal {
     private MapDirection direction;
     private Vector2d situation;
+    private IWorldMap map;
 
 
     public Animal() {
-        setSituation(new Vector2d(2,2));
-        setDirection(MapDirection.NORTH);
+        this.situation = new Vector2d(2,2);
+        this.direction = MapDirection.NORTH;
     }
 
+
+    public Animal(IWorldMap map) {
+        this.situation = new Vector2d(2,2);
+        this.direction = MapDirection.NORTH;
+        map.place(this);
+        this.map=map;
+    }
+
+
+    public Animal(IWorldMap map, Vector2d initialPosition) {
+        this.situation = initialPosition;
+        this.direction = MapDirection.NORTH;
+        map.place(this);
+        this.map=map;
+    }
 
 
     public MapDirection getDirection() {
         return direction;
     }
 
-    public void setDirection(MapDirection direction) {
-        this.direction = direction;
-    }
-
     public Vector2d getSituation() {
         return situation;
     }
 
-    public void setSituation(Vector2d situation) {
-        this.situation = situation;
+
+
+    public void movePosition(MoveDirection direction) {
+        Vector2d v;
+        if (direction == MoveDirection.FORWARD)
+            v = getSituation().add(getDirection().toUnitVector());
+
+        else
+            v = getSituation().subtract(getDirection().toUnitVector());
+
+        if (map.canMoveTo(v))
+            this.situation = v;
     }
 
 
@@ -40,35 +66,35 @@ public class Animal {
         switch (direction) {
 
             case RIGHT: {
-                this.setDirection(getDirection().next());
+                this.direction = this.direction.next();
                 break;
             }
             case LEFT: {
-                this.setDirection(getDirection().previous());
+                this.direction = this.direction.previous();
                 break;
             }
-            case FORWARD:  {
-                Vector2d v = getSituation().add(getDirection().toUnitVector());
-                if ((v.x >= 0) && (v.x <= 4) && (v.y >= 0) && (v.y <= 4))
-                        this.setSituation(v);
-                break;
-            }
-            case BACKWARD: {
-                Vector2d v = getSituation().subtract(getDirection().toUnitVector());
-                if ((v.x >= 0) && (v.x <= 4) && (v.y >= 0) && (v.y <= 4))
-                    this.setSituation(v);
-                break;
-            }
+
+            case FORWARD:
+            case BACKWARD:
+                movePosition(direction);
         }
     }
 
 
     @Override
     public String toString() {
-        return "Animal{" +
-                "direction=" + direction +
-                ", situation=" + situation +
-                '}';
+        switch (this.direction) {
+            case NORTH:
+                return "∧";
+            case SOUTH:
+                return "∨";
+            case EAST:
+                return ">";
+            case WEST:
+                return "<";
+            default:
+                throw new IllegalArgumentException();
+        }
     }
 
     @Override
