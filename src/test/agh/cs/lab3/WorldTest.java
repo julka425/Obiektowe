@@ -3,15 +3,17 @@ import agh.cs.lab2.MoveDirection;
 import agh.cs.lab2.MapDirection;
 import agh.cs.lab2.Vector2d;
 
+import agh.cs.lab4.RectangularMap;
 import org.junit.jupiter.api.Test;
 import java.util.LinkedList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class WorldTest {
+    RectangularMap map = new RectangularMap(5,5);
 
     @Test
     void shouldBeProperlyOrientedAfterTurningLeft() {
-        Animal animal = new Animal();
+        Animal animal = new Animal(map);
         assertEquals(MapDirection.NORTH, animal.getDirection());
 
         animal.move(MoveDirection.LEFT);
@@ -29,7 +31,7 @@ class WorldTest {
 
     @Test
     void shouldBeProperlyOrientedAfterTurningRight() {
-        Animal animal = new Animal();
+        Animal animal = new Animal(map);
 
         animal.move(MoveDirection.RIGHT);
         assertEquals(MapDirection.EAST, animal.getDirection());
@@ -47,7 +49,7 @@ class WorldTest {
 
     @Test
     void shouldChangePositionsProperlyGoingForward() {
-        Animal animal = new Animal();
+        Animal animal = new Animal(map);
 
         animal.move(MoveDirection.FORWARD);
         assertEquals(new Vector2d (2,3), animal.getSituation());
@@ -67,7 +69,7 @@ class WorldTest {
 
     @Test
     void shouldChangePositionsProperlyGoingBackward() {
-        Animal animal = new Animal();
+        Animal animal = new Animal(map);
 
         animal.move(MoveDirection.BACKWARD);
         assertEquals(new Vector2d (2,1), animal.getSituation());
@@ -87,7 +89,7 @@ class WorldTest {
 
     @Test
     void shouldStayInPlaceWhenAtUpperBorder() {
-        Animal animal = new Animal();
+        Animal animal = new Animal(map);
         for (int i=0; i<2 ; i++) {
             animal.move(MoveDirection.FORWARD);
         }
@@ -100,7 +102,7 @@ class WorldTest {
 
     @Test
     void shouldStayInPlaceWhenAtRightBorder() {
-        Animal animal = new Animal();
+        Animal animal = new Animal(map);
         animal.move(MoveDirection.RIGHT);
 
         for (int i=0; i<2; i++) {
@@ -115,7 +117,7 @@ class WorldTest {
 
     @Test
     void shouldStayInPlaceWhenAtLowerBorder() {
-        Animal animal = new Animal();
+        Animal animal = new Animal(map);
         for (int i=0; i<2 ; i++) {
             animal.move(MoveDirection.BACKWARD);
         }
@@ -128,7 +130,7 @@ class WorldTest {
 
     @Test
     void shouldStayInPlaceWhenAtLeftBorder() {
-        Animal animal = new Animal();
+        Animal animal = new Animal(map);
         animal.move(MoveDirection.RIGHT);
         for (int i=0; i<2 ; i++) {
             animal.move(MoveDirection.BACKWARD);

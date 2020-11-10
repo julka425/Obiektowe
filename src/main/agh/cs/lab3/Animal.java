@@ -7,6 +7,7 @@ import agh.cs.lab4.IWorldMap;
 import java.util.List;
 import java.util.Objects;
 import java.lang.IllegalArgumentException;
+import java.lang.NullPointerException;
 import java.util.Optional;
 
 public class Animal {
@@ -22,17 +23,14 @@ public class Animal {
 
 
     public Animal(IWorldMap map) {
-        this.situation = new Vector2d(2,2);
-        this.direction = MapDirection.NORTH;
-        map.place(this);
-        this.map=map;
+        this(map, new Vector2d(2,2));
     }
-
 
     public Animal(IWorldMap map, Vector2d initialPosition) {
         this.situation = initialPosition;
         this.direction = MapDirection.NORTH;
-        map.place(this);
+        if (!map.place(this))
+            throw new NullPointerException();
         this.map=map;
     }
 
@@ -50,10 +48,10 @@ public class Animal {
     public void movePosition(MoveDirection direction) {
         Vector2d v;
         if (direction == MoveDirection.FORWARD)
-            v = getSituation().add(getDirection().toUnitVector());
+            v = this.situation.add(this.direction.toUnitVector());
 
         else
-            v = getSituation().subtract(getDirection().toUnitVector());
+            v = this.situation.subtract(this.direction.toUnitVector());
 
         if (map.canMoveTo(v))
             this.situation = v;
