@@ -1,42 +1,50 @@
 package agh.cs.lab5;
 
+import agh.cs.lab2.MapDirection;
 import agh.cs.lab2.MoveDirection;
 import agh.cs.lab2.Vector2d;
 import agh.cs.lab3.Animal;
 import agh.cs.lab4.IWorldMap;
 import agh.cs.lab4.MapVisualiser;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
-
-public class AbstractWorldMap implements IWorldMap {
-    private ArrayList<Animal> animals;
+public abstract class AbstractWorldMap implements IWorldMap {
+    protected LinkedList<Animal> animals;
+    protected HashMap<Vector2d,Animal> animalHashMap = new HashMap<>();
 
     public AbstractWorldMap() {
-        this.animals = new ArrayList<>();
+        this.animals = new LinkedList<>();
     }
 
-    public ArrayList<Animal> getAnimals() {
-        return animals;
+
+    public Vector2d getAnimalSituation(int idx) {
+        return animals.get(idx).getSituation();
+    }
+
+    public MapDirection getAnimalDirection(int idx) {
+        return animals.get(idx).getDirection();
+    }
+
+    public Integer getNumberOfAnimals() {
+        return animals.size();
     }
 
     @Override
-    public boolean canMoveTo(Vector2d position) {
-        return false;
-    }
+    public abstract boolean canMoveTo(Vector2d position);
 
 
     @Override
     public boolean place(Animal animal) {
         if (!animalObjectAt(animal.getSituation()).isPresent()) {
             animals.add(animal);
+            animalHashMap.put(animal.getSituation(),animal);
             return true;
         }
         return false;
     }
+
 
 
     @Override
@@ -44,7 +52,14 @@ public class AbstractWorldMap implements IWorldMap {
         int i=0;
 
         for (MoveDirection direction: directions) {
-            animals.get(i%animals.size()).move(direction);
+            Animal animal = animals.get(i%animals.size());
+            Vector2d position = animal.getSituation();
+            animal.move(direction);
+
+            if (animal.getSituation()!=position) {
+                animalHashMap.remove(position);
+                animalHashMap.put(animal.getSituation(),animal);
+            }
             i++;
         }
     }
@@ -57,18 +72,15 @@ public class AbstractWorldMap implements IWorldMap {
 
 
     public Optional<Object> animalObjectAt(Vector2d position) {
-        for (Animal animal: animals) {
-            if (animal.getSituation().equals(position))
-                return Optional.of(animal);
+        if (animalHashMap.containsKey(position)) {
+            return Optional.of(animalHashMap.get(position));
         }
         return Optional.empty();
     }
 
 
     @Override
-    public Optional<Object> objectAt(Vector2d position) {
-        return Optional.empty();
-    }
+    public abstract Optional<Object> objectAt(Vector2d position);
 
 
     public Vector2d[] getExtremes() {

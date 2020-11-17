@@ -39,6 +39,7 @@ public class RectangularMap extends AbstractWorldMap {
 
 
 
+
     @Override
     public Vector2d[] getExtremes() {
         Vector2d[] result = new Vector2d[2];

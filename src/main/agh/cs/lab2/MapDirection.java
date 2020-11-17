@@ -1,6 +1,6 @@
 package agh.cs.lab2;
 
-import java.util.Map;
+
 
 public enum MapDirection {
     NORTH, SOUTH, WEST, EAST;

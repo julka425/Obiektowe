@@ -4,11 +4,10 @@ import agh.cs.lab2.MoveDirection;
 import agh.cs.lab2.Vector2d;
 import agh.cs.lab4.IWorldMap;
 
-import java.util.List;
+
 import java.util.Objects;
 import java.lang.IllegalArgumentException;
-import java.lang.NullPointerException;
-import java.util.Optional;
+
 
 public class Animal {
     private MapDirection direction;
@@ -30,8 +29,8 @@ public class Animal {
         this.situation = initialPosition;
         this.direction = MapDirection.NORTH;
         if (!map.place(this))
-            throw new NullPointerException();
-        this.map=map;
+            throw new IllegalArgumentException("couldn't place an animal on " + this.situation);
+        this.map = map;
     }
 
 

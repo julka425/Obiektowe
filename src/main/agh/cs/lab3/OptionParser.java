@@ -27,6 +27,8 @@ public class OptionParser {
                 list.add(MoveDirection.RIGHT);
             }
 
+            else throw new IllegalArgumentException(arg + " is not legal move specification");
+
         }
         return list;
 

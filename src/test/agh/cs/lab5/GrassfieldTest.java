@@ -41,8 +41,8 @@ class GrassfieldTest {
         map.place(new Animal((map)));
         map.place(new Animal(map,new Vector2d(3,4)));
         map.run(directions);
-        assertEquals(new Vector2d(2,-1), map.getAnimals().get(0).getSituation());
-        assertEquals(new Vector2d(3,7), map.getAnimals().get(1).getSituation());
+        assertEquals(new Vector2d(2,-1), map.getAnimalSituation(0));
+        assertEquals(new Vector2d(3,7), map.getAnimalSituation(1));
 
     }
 

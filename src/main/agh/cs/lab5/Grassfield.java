@@ -10,27 +10,29 @@ import java.util.*;
 
 
 public class Grassfield extends AbstractWorldMap {
-    private int count;
     private final ArrayList<Grass> grassList;
 
     Random generator = new Random();
 
 
     public Grassfield(int count) {
-        this.count = count;
         this.grassList = new ArrayList<>();
 
 
         for (int i=0;i<count;i++) {
-            grassList.add(new Grass(new Vector2d(generator.nextInt((int) Math.sqrt(count*10)),
-                    generator.nextInt((int) Math.sqrt(count*10)))));
+            Grass grass;
+            do {
+                grass = new Grass(new Vector2d(generator.nextInt((int) Math.sqrt(count*10)),
+                    generator.nextInt((int) Math.sqrt(count*10)))); }
+            while (grassList.contains((Object)grass));
+            grassList.add(grass);
         }
 
     }
 
 
 
-    public ArrayList<Grass> getGrassList() {
+    protected ArrayList<Grass> getGrassList() {
         return grassList;
     }
 
@@ -72,8 +74,8 @@ public class Grassfield extends AbstractWorldMap {
         int minY = Integer.MAX_VALUE;
 
 
-        for (int i=0; i< getAnimals().size(); i++) {
-            Vector2d pos = getAnimals().get(i).getSituation();
+        for (int i=0; i< getNumberOfAnimals(); i++) {
+            Vector2d pos = getAnimalSituation(i);
 
             maxX = Math.max(maxX, pos.x);
             minX = Math.min(minX, pos.x);
