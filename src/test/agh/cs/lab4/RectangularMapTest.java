@@ -38,14 +38,13 @@ class RectangularMapTest {
     }
 
 
-
     @Test
     void shouldChangePositionsCorrectly() {
         map.place(new Animal((map)));
         map.place(new Animal(map,new Vector2d(3,4)));
         map.run(directions);
-        assertEquals(new Vector2d(2,0), map.getAnimalSituation(0));
-        assertEquals(new Vector2d(3,4), map.getAnimalSituation(1));
+        assertEquals(new Vector2d(2,0), map.getAnimal(0).getSituation());
+        assertEquals(new Vector2d(3,4), map.getAnimal(1).getSituation());
 
     }
 
@@ -81,42 +80,42 @@ class RectangularMapTest {
 
         LinkedList<MoveDirection> directions = OptionParser.parse(Arrays.copyOfRange(array, 0, 2));
         map.run(directions);
-        assertEquals(new Vector2d(2,3),map.getAnimalSituation(0));
-        assertEquals(new Vector2d(3,3),map.getAnimalSituation(1));
+        assertEquals(new Vector2d(2,3),map.getAnimal(0).getSituation());
+        assertEquals(new Vector2d(3,3),map.getAnimal(1).getSituation());
 
         directions = OptionParser.parse(Arrays.copyOfRange(array, 2, 4));
         map.run(directions);
-        assertEquals(MapDirection.EAST, map.getAnimalDirection(0));
-        assertEquals(MapDirection.WEST,map.getAnimalDirection(1));
+        assertEquals(MapDirection.EAST, map.getAnimal(0).getDirection());
+        assertEquals(MapDirection.WEST,map.getAnimal(1).getDirection());
 
         directions = OptionParser.parse(Arrays.copyOfRange(array, 4, 6));
         map.run(directions);
-        assertEquals(new Vector2d(2,3),map.getAnimalSituation(0));
-        assertEquals(new Vector2d(3,3),map.getAnimalSituation(1));
+        assertEquals(new Vector2d(2,3),map.getAnimal(0).getSituation());
+        assertEquals(new Vector2d(3,3),map.getAnimal(1).getSituation());
 
         directions = OptionParser.parse(Arrays.copyOfRange(array, 6, 8));
         map.run(directions);
-        assertEquals(MapDirection.SOUTH,map.getAnimalDirection(0));
-        assertEquals(MapDirection.NORTH,map.getAnimalDirection(1));
+        assertEquals(MapDirection.SOUTH,map.getAnimal(0).getDirection());
+        assertEquals(MapDirection.NORTH,map.getAnimal(1).getDirection());
 
         directions = OptionParser.parse(Arrays.copyOfRange(array, 8, 10));
         map.run(directions);
-        assertEquals(new Vector2d(2,2),map.getAnimalSituation(0));
-        assertEquals(new Vector2d(3,4),map.getAnimalSituation(1));
+        assertEquals(new Vector2d(2,2),map.getAnimal(0).getSituation());
+        assertEquals(new Vector2d(3,4),map.getAnimal(1).getSituation());
 
         directions = OptionParser.parse(Arrays.copyOfRange(array, 10, 12));
         map.run(directions);
-        assertEquals(new Vector2d(2,1),map.getAnimalSituation(0));
-        assertEquals(new Vector2d(3,4),map.getAnimalSituation(1));
+        assertEquals(new Vector2d(2,1),map.getAnimal(0).getSituation());
+        assertEquals(new Vector2d(3,4),map.getAnimal(1).getSituation());
 
         directions = OptionParser.parse(Arrays.copyOfRange(array, 12, 14));
         map.run(directions);
-        assertEquals(new Vector2d(2,0),map.getAnimalSituation(0));
-        assertEquals(new Vector2d(3,4),map.getAnimalSituation(1));
+        assertEquals(new Vector2d(2,0),map.getAnimal(0).getSituation());
+        assertEquals(new Vector2d(3,4),map.getAnimal(1).getSituation());
 
         directions = OptionParser.parse(Arrays.copyOfRange(array, 14, 16));
         map.run(directions);
-        assertEquals(new Vector2d(2,0),map.getAnimalSituation(0));
-        assertEquals(new Vector2d(3,4),map.getAnimalSituation(1));
+        assertEquals(new Vector2d(2,0),map.getAnimal(0).getSituation());
+        assertEquals(new Vector2d(3,4),map.getAnimal(1).getSituation());
     }
 }

@@ -1,16 +1,16 @@
 package agh.cs.lab5;
 
-import agh.cs.lab2.MapDirection;
 import agh.cs.lab2.MoveDirection;
 import agh.cs.lab2.Vector2d;
 import agh.cs.lab3.Animal;
 import agh.cs.lab4.IWorldMap;
 import agh.cs.lab4.MapVisualiser;
+import agh.cs.lab7.IPositionChangeObserver;
 
 import java.util.*;
 
 
-public abstract class AbstractWorldMap implements IWorldMap {
+public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
     protected LinkedList<Animal> animals;
     protected HashMap<Vector2d,Animal> animalHashMap = new HashMap<>();
 
@@ -18,18 +18,17 @@ public abstract class AbstractWorldMap implements IWorldMap {
         this.animals = new LinkedList<>();
     }
 
-
-    public Vector2d getAnimalSituation(int idx) {
-        return animals.get(idx).getSituation();
+    public Animal getAnimal(int idx) {
+        return animals.get(idx);
     }
 
-    public MapDirection getAnimalDirection(int idx) {
-        return animals.get(idx).getDirection();
+
+    @Override
+    public void positionChanged(Animal animal, Vector2d oldPosition, Vector2d newPosition) {
+        animalHashMap.remove(oldPosition);
+        animalHashMap.put(newPosition,animal);
     }
 
-    public Integer getNumberOfAnimals() {
-        return animals.size();
-    }
 
     @Override
     public abstract boolean canMoveTo(Vector2d position);
@@ -53,13 +52,7 @@ public abstract class AbstractWorldMap implements IWorldMap {
 
         for (MoveDirection direction: directions) {
             Animal animal = animals.get(i%animals.size());
-            Vector2d position = animal.getSituation();
             animal.move(direction);
-
-            if (animal.getSituation()!=position) {
-                animalHashMap.remove(position);
-                animalHashMap.put(animal.getSituation(),animal);
-            }
             i++;
         }
     }
@@ -83,12 +76,7 @@ public abstract class AbstractWorldMap implements IWorldMap {
     public abstract Optional<Object> objectAt(Vector2d position);
 
 
-    public Vector2d[] getExtremes() {
-        Vector2d[] result = new Vector2d[2];
-        result[0] = new Vector2d(0,0);
-        result[1] = new Vector2d(0,0);
-        return result;
-    }
+    public abstract Vector2d[] getExtremes();
 
 
     @Override

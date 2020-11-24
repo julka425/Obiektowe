@@ -62,6 +62,10 @@ class WorldTest {
         animal.move(MoveDirection.FORWARD);
         assertEquals(new Vector2d(1,2), animal.getSituation());
 
+        animal.move(MoveDirection.LEFT);
+        animal.move(MoveDirection.FORWARD);
+        assertEquals(new Vector2d(2,2), animal.getSituation());
+
     }
 
     @Test
@@ -78,6 +82,10 @@ class WorldTest {
         animal.move(MoveDirection.LEFT);
         animal.move(MoveDirection.BACKWARD);
         assertEquals(new Vector2d(3,2), animal.getSituation());
+
+        animal.move(MoveDirection.LEFT);
+        animal.move(MoveDirection.BACKWARD);
+        assertEquals(new Vector2d(2,2), animal.getSituation());
 
     }
 

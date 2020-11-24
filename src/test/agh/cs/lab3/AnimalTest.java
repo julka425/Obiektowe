@@ -21,6 +21,7 @@ class AnimalTest {
         animal.move(MoveDirection.RIGHT);
         //then
         assertEquals(MapDirection.EAST, animal.getDirection());
+
     }
 
     @Test

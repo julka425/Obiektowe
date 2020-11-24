@@ -2,6 +2,7 @@ package agh.cs.lab5;
 
 
 import agh.cs.lab2.Vector2d;
+import agh.cs.lab7.MapBoundary;
 
 
 import java.lang.Math;
@@ -10,13 +11,12 @@ import java.util.*;
 
 
 public class Grassfield extends AbstractWorldMap {
-    private final ArrayList<Grass> grassList;
-
+    private MapBoundary boundary;
+    protected HashMap<Vector2d, Grass> grassHashMap = new HashMap<>();
     Random generator = new Random();
 
 
     public Grassfield(int count) {
-        this.grassList = new ArrayList<>();
 
 
         for (int i=0;i<count;i++) {
@@ -24,19 +24,17 @@ public class Grassfield extends AbstractWorldMap {
             do {
                 grass = new Grass(new Vector2d(generator.nextInt((int) Math.sqrt(count*10)),
                     generator.nextInt((int) Math.sqrt(count*10)))); }
-            while (grassList.contains((Object)grass));
-            grassList.add(grass);
+            while (grassHashMap.containsKey(grass.getPosition()));
+            grassHashMap.put(grass.getPosition(),grass);
         }
 
+        this.boundary = new MapBoundary();
+
     }
 
-
-
-    protected ArrayList<Grass> getGrassList() {
-        return grassList;
+    public MapBoundary getBoundary() {
+        return boundary;
     }
-
-
 
     @Override
     public boolean canMoveTo(Vector2d position) {
@@ -46,10 +44,8 @@ public class Grassfield extends AbstractWorldMap {
 
 
     public Optional<Object> grassObjectAt(Vector2d position) {
-        for (Grass grass: grassList) {
-            if (grass.getPosition().equals(position))
-                return Optional.of(grass);
-        }
+        if (grassHashMap.containsKey(position))
+            return Optional.of(grassHashMap.get(position));
         return Optional.empty();
     }
 
@@ -67,34 +63,21 @@ public class Grassfield extends AbstractWorldMap {
 
     @Override
     public Vector2d[] getExtremes() {
-        int maxX = Integer.MIN_VALUE;
-        int minX = Integer.MAX_VALUE;
 
-        int maxY = Integer.MIN_VALUE;
-        int minY = Integer.MAX_VALUE;
+        Vector2d lowerCorner = boundary.getSortedX().getFirst().getSituation().lowerLeft(boundary.getSortedY().getFirst().getSituation());
+        Vector2d upperCorner = boundary.getSortedX().getLast().getSituation().upperRight(boundary.getSortedY().getLast().getSituation());
 
 
-        for (int i=0; i< getNumberOfAnimals(); i++) {
-            Vector2d pos = getAnimalSituation(i);
-
-            maxX = Math.max(maxX, pos.x);
-            minX = Math.min(minX, pos.x);
-            maxY = Math.max(maxY, pos.y);
-            minY = Math.min(minY, pos.y);
-       }
-
-        for (Grass grass: grassList) {
+        for (Grass grass: grassHashMap.values()) {
             Vector2d pos = grass.getPosition();
 
-            maxX = Math.max(maxX, pos.x);
-            minX = Math.min(minX, pos.x);
-            maxY = Math.max(maxY, pos.y);
-            minY = Math.min(minY, pos.y);
+            lowerCorner = lowerCorner.lowerLeft(pos);
+            upperCorner = upperCorner.upperRight(pos);
+
        }
 
-        Vector2d[] result = new Vector2d[2];
-        result[0] = new Vector2d(minX, minY);
-        result[1] = new Vector2d(maxX, maxY);
+
+        Vector2d[] result = {lowerCorner, upperCorner};
         return result;
     }
 

@@ -34,15 +34,15 @@ class GrassfieldTest {
 
 
 
-    @Test
+   @Test
     void shouldChangePositionsCorrectly() {
         String[] array = {"f", "b", "r", "l", "f", "f", "r", "r", "f", "f", "f", "f", "f", "f", "f", "f"};
         LinkedList<MoveDirection> directions = new OptionParser().parse(array);
         map.place(new Animal((map)));
         map.place(new Animal(map,new Vector2d(3,4)));
         map.run(directions);
-        assertEquals(new Vector2d(2,-1), map.getAnimalSituation(0));
-        assertEquals(new Vector2d(3,7), map.getAnimalSituation(1));
+        assertEquals(new Vector2d(2,-1), map.getAnimal(0).getSituation());
+        assertEquals(new Vector2d(3,7), map.getAnimal(1).getSituation());
 
     }
 
@@ -53,8 +53,6 @@ class GrassfieldTest {
         //animal
         Animal animal = new Animal(map);
         assertEquals(true, map.isOccupied(animal.getSituation()));
-        //grass
-        assertEquals(true, map.isOccupied(map.getGrassList().get(0).getPosition()));
         //nothing
         assertEquals(false, map.isOccupied(new Vector2d(-3,-12)));
     }
@@ -66,9 +64,6 @@ class GrassfieldTest {
         //animal
         Animal animal = new Animal(map);
         assertEquals(Optional.of(animal), map.objectAt(animal.getSituation()));
-        //grass
-        Grass grass = map.getGrassList().get(0);
-        assertEquals(Optional.of(grass), map.objectAt(grass.getPosition()));
         //nothing
         assertEquals(Optional.empty(), map.objectAt(new Vector2d(-3,-12)));
     }
