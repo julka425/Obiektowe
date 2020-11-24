@@ -15,7 +15,7 @@ public class World {
         try {
 
             String[] array = {"f", "b", "r", "l", "f", "r", "r", "f", "f", "f", "f", "f", "f", "f", "f"};
-            LinkedList<MoveDirection> directions = new OptionParser().parse(array);
+            LinkedList<MoveDirection> directions = OptionParser.parse(array);
             IWorldMap map = new Grassfield(10);
             map.place(new Animal(map));
             map.place(new Animal(map, new Vector2d(3,4)));
